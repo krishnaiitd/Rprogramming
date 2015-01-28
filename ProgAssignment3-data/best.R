@@ -4,18 +4,27 @@ best <- function(state, outcome) {
         
         ## check that state and outcome are valid
         
-        stateList <- list(unique(df['State']))
+        states <- unique(df['State'])
+        stateList <- c()
+        for(s in states) {
+                stateList <- c(stateList, s)
+        }
         outcomeList <- list("heart attack", "heart failure", "pneumonia")
-        print(state)
         
-        if(state %in% stateList){
+        ## For testing purposes.
+        #print(state)
+        #print('prepared list')
+        #print(stateList)
+        
+        ## check that state is valid or not
+        if(!(state %in% stateList)){
                 stop("invalid state")
-        } 
-        if(outcome %in% outcomeList) {
+        }
+        ## check that outcome is valid or not 
+        if(!(outcome %in% outcomeList)) {
                 stop("invalid outcome")
         }
-        
-        print('lets start ccalculation')
+        ## Lets start working
         
         
 }
