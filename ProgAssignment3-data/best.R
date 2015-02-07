@@ -36,9 +36,11 @@ best <- function(state, outcome) {
         } else if(outcome == "heart failure")  {
           outcomeColumn = c(outcomeColumn, "Hospital.30.Day.Death..Mortality..Rates.from.Heart.Failure")
           numericRow = "Hospital.30.Day.Death..Mortality..Rates.from.Heart.Failure";
+          
           #outcomeColumn = 17
         } else if (outcome == "pneumonia") {
           #outcomeColumn  = 23
+          
           numericRow = "Hospital.30.Day.Death..Mortality..Rates.from.Pneumonia";
           outcomeColumn = c(outcomeColumn, "Hospital.30.Day.Death..Mortality..Rates.from.Pneumonia")
         }
@@ -49,8 +51,9 @@ best <- function(state, outcome) {
         
         outComeRow <- outcomeData[which(outcomeData[[numericRow]] == min(outcomeData[[numericRow]], na.rm = TRUE)), ]
         hospitalNames <- outComeRow[order(outComeRow[["Hospital.Name"]]), ];
-        
-        print(order(hospitalNames))
+        print(hospitalNames[["Hospital.Name"]][1])
+        #print(order(hospitalNames))
+        #print(hospitalNames)
         # sort and print the first one 
 
         
