@@ -14,7 +14,7 @@ best <- function(state, outcome) {
         ## For testing purposes.
         #print(state)
         #print('prepared list')
-        #print(stateList)
+        print(stateList)
         
         ## check that state is valid or not
         if(!(state %in% stateList)){
@@ -50,8 +50,10 @@ best <- function(state, outcome) {
         outComeRow <- outcomeData[which(outcomeData[[numericRow]] == min(outcomeData[[numericRow]], na.rm = TRUE)), ]
         hospitalNames <- outComeRow[order(outComeRow[["Hospital.Name"]]), ];
         
+        print(outComeRow)
         print(order(hospitalNames))
         # sort and print the first one 
+        
 
         
         
