@@ -1,0 +1,1 @@
+df <- read.csv("getdata-wksst8110.for")
