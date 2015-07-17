@@ -1,0 +1,5 @@
+library(datasets)
+data(airquality)
+airquality = transform(airquality, Month = factor(Month))
+plotView <- qplot(Wind, Ozone, data = airquality, facets = . ~ Month)
+print(plotView)
