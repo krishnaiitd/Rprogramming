@@ -1,0 +1,8 @@
+library(httr)
+oauth_endpoints("github")
+myapp <- oauth_app("github", "198634973f47b32e2fc6", "fff45bde328ada5957d2182d9e47221673baa207")
+github_token <- oauth2.0_token(oauth_endpoints("github"), myapp)
+req <- GET("https://api.github.com/rate_limit", config(token = github_token))
+stop_for_status(req)
+content(req)
+BROWSE("https://api.github.com/users/jtleek/repos",authenticate("Access Token","x-oauth-basic","basic"))
