@@ -4,37 +4,29 @@ rankhospital <- function(state, outcome, num = "best") {
         df <- read.csv("outcome-of-care-measures.csv", colClasses = "character")
 
         ## Check that state and outcome are valid
-        states <- unique(df['State'])
-        stateList <- c()
-        for(s in states) {
-                stateList <- c(stateList, s)
-        }
+        # Get the unique list of state and outcomes
+        states <- unique(df$State)
+        outcomeList <- list("heart attack", "heart failure", "pneumonia")
+        
         ## check that state is valid or not
-        if(!(state %in% stateList)){
-                stop("invalid state")
+        if(!(state %in% states)){
+          stop("invalid state")
         }
-
-        outcomeList <- list("heart attack", "heart failure", "pneumonia")        
         ## check that outcome is valid or not 
         if(!(outcome %in% outcomeList)) {
                 stop("invalid outcome")
         }
+        
+        
         # Exclude the other states data
-        maindf <- subset(df, df['State'] ==  state)
-        numberOfHospital = nrow(maindf)
-        ## check the num varibale validity
-        if(num == 'best') {
-              num <- 1;  
-        } 
+        maindf <- subset(df, df$State ==  state)
         
-        if(num == "worst") {
-                num <- numberOfHospital     
-        }
-        
-        if(num > numberOfHospital) {
+        if(is.numeric(num) && num > nrow(maindf)) {
                 return(NA);
         }
+        
         outcomeColumn = c("Hospital.Name")
+        
         if(outcome == "heart attack") {
                 stringRow = "Hospital.30.Day.Death..Mortality..Rates.from.Heart.Attack";
                 outcomeColumn = c(outcomeColumn, stringRow)
@@ -47,22 +39,29 @@ rankhospital <- function(state, outcome, num = "best") {
                 stringRow = "Hospital.30.Day.Death..Mortality..Rates.from.Pneumonia";
                 outcomeColumn = c(outcomeColumn, stringRow)
                 numericRow  = 23
+        } else {
+                stop("invalid outcome")
         }
         
         maindf <- maindf[outcomeColumn]
-        #print(maindf)
-        #rr[with(rr, order(Rate, Hospital.Name, decreasing = TRUE)), ]
-        #print(stringRow)
-        #sorteddf <- maindf[with(maindf, order(stringRow)), ]
-        #tt <- order(maindf[, stringRow])
-        #print(tt)fi
-        sorteddf <- maindf[order(maindf[, stringRow], rev(order(maindf[, "Hospital.Name"]))), "Hospital.Name"]
-        #print(maindf)
-        print(sorteddf[c(num)])
-       
         
-        ## Lets start working
+        suppressWarnings(maindf[, c(stringRow)] <- sapply(maindf[, c(stringRow)], as.numeric))
         
-        ## Return hospital name in that state with the given rank
-        ## 30-day death rate
+        maindf <- subset(maindf, is.na(maindf[[stringRow]]) == FALSE)
+        #print(maindf)
+        
+        if(num == "best") {
+          oneHospital <- maindf[which.min(maindf[[stringRow]]), ]
+          return(oneHospital$Hospital.Name)
+        } else if(num == "worst") {
+          oneHospital <- maindf[which.max(maindf[[stringRow]]), ]
+          return(oneHospital$Hospital.Name)
+        } else if(is.numeric(num)) {
+          #print(class(maindf))
+          #stop('hre')
+          df <- maindf[order(maindf[[stringRow]], maindf$Hospital.Name),]
+          return(as.character(df[num,]$Hospital.Name))
+        } else {
+          stop('invalid num')
+        }
 }
