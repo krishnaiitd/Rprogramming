@@ -1,0 +1,5 @@
+library("audio")
+bday_file <- tempfile()
+download.file("http://www.happybirthdaymusic.info/01_happy%20birthday%20song.wav", bday_file, mode = "wb")
+bday <- load.wave(bday_file)
+play(bday)
