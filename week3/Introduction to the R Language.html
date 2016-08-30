@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<!-- saved from url=(0085)http://datasciencespecialization.github.io/courses/02_RProgramming/apply/index.html#1 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Introduction to the R Language</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Introduction to the R Language">
+  <meta name="author" content="Roger Peng, Associate Professor">
+  <meta name="generator" content="slidify">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="http://datasciencespecialization.github.io/courses/libraries/frameworks/io2012/css/default.css" media="all">
+  <link rel="stylesheet" href="http://datasciencespecialization.github.io/courses/libraries/frameworks/io2012/phone.css" media="only screen and (max-device-width: 480px)">
+  <link rel="stylesheet" href="http://datasciencespecialization.github.io/courses/libraries/frameworks/io2012/css/slidify.css">
+  <link rel="stylesheet" href="http://datasciencespecialization.github.io/courses/libraries/highlighters/highlight.js/css/tomorrow.css">
+  <script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="slides" src="./Introduction to the R Language_files/slides.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="order" src="./Introduction to the R Language_files/order.js"></script><script type="text/javascript" charset="utf-8" data-requirecontext="_" data-requiremodule="slide_config" src="./Introduction to the R Language_files/slide_config.js"></script><script type="text/javascript" charset="utf-8" data-requirecontext="_" data-requiremodule="modernizr.custom.45394" src="./Introduction to the R Language_files/modernizr.custom.45394.js"></script><script type="text/javascript" charset="utf-8" data-requirecontext="_" data-requiremodule="prettify/prettify" src="./Introduction to the R Language_files/prettify.js"></script><script type="text/javascript" charset="utf-8" data-requirecontext="_" data-requiremodule="hammer" src="./Introduction to the R Language_files/hammer.js"></script><script type="text/javascript" charset="utf-8" data-requirecontext="_" data-requiremodule="slide-controller" src="./Introduction to the R Language_files/slide-controller.js"></script><script type="text/javascript" charset="utf-8" data-requirecontext="_" data-requiremodule="slide-deck" src="./Introduction to the R Language_files/slide-deck.js"></script><!--<base target="_blank">--><base href="." target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script data-main="../../libraries/frameworks/io2012/js/slides" src="./Introduction to the R Language_files/require-1.0.8.min.js">
+  </script>
+  
+    <link rel="stylesheet" href="http://datasciencespecialization.github.io/courses/assets/css/custom.css">
+<link rel="stylesheet" href="http://datasciencespecialization.github.io/courses/assets/css/ribbons.css">
+
+<style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Hover_Arrow {position: absolute; width: 15px; height: 11px; cursor: pointer}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 5px 0px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 5px; -webkit-border-radius: 5px; -moz-border-radius: 5px; -khtml-border-radius: 5px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 1px 2em; background: transparent}
+.MathJax_MenuTitle {background-color: #CCCCCC; margin: -5px 0 0 0; text-align: center; font-style: italic; font-size: 80%; color: #444444; padding: 2px 0; overflow: hidden}
+.MathJax_MenuArrow {position: absolute; right: .5em; color: #666666}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuRadioCheck {position: absolute; left: .7em}
+.MathJax_MenuLabel {padding: 1px 2em 3px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #DDDDDD; margin: 4px 3px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: #606872; color: white}
+.MathJax_Menu_Close {position: absolute; width: 31px; height: 31px; top: -15px; left: -15px}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1em; bottom: 1.5em; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><link rel="icon" type="image/png" href="http://datasciencespecialization.github.io/courses/02_RProgramming/apply/images/google_developers_logo_tiny.png"><link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open%20Sans:regular,semibold,italic,italicsemibold|Inconsolata&v2"></head>
+<body style="opacity: 0" class="loaded popup"><div id="MathJax_Message" style="display: none;"></div>
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+    <!-- END LOGO SLIDE -->
+    
+
+    <!-- TITLE SLIDE -->
+    <!-- Should I move this to a Local Layout File? -->
+    <slide class="title-slide segue nobackground current" data-slide-num="1" data-total-slides="7">
+      <aside class="gdbar">
+        <img src="./Introduction to the R Language_files/bloomberg_shield.png">
+      </aside>
+      <hgroup class="auto-fadein">
+        <h1>Introduction to the R Language</h1>
+        <h2>Loop Functions - apply</h2>
+        <p>Roger Peng, Associate Professor<br>Johns Hopkins Bloomberg School of Public Health</p>
+      </hgroup>
+          </slide>
+
+    <!-- SLIDES -->
+      <slide class="next" id="slide-1" style="background:;" data-slide-num="2" data-total-slides="7">
+  <hgroup>
+    <h2>apply</h2>
+  </hgroup>
+  <article>
+    <p><code>apply</code> is used to a evaluate a function (often an anonymous one) over the margins of an array.</p>
+
+<ul>
+<li><p>It is most often used to apply a function to the rows or columns of a matrix</p></li>
+<li><p>It can be used with general arrays, e.g. taking the average of an array of matrices </p></li>
+<li><p>It is not really faster than writing a loop, but it works in one line!</p></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="far-next" id="slide-2" style="background:;" data-slide-num="3" data-total-slides="7">
+  <hgroup>
+    <h2>apply</h2>
+  </hgroup>
+  <article>
+    <pre><code class="r">&gt; str(apply)
+<span class="keyword">function</span> (X, MARGIN, FUN, <span class="keyword">...</span>)
+</code></pre>
+
+<ul>
+<li><code>X</code> is an array</li>
+<li><code>MARGIN</code> is an integer vector indicating which margins should be “retained”. </li>
+<li><code>FUN</code> is a function to be applied</li>
+<li>... is for other arguments to be passed to <code>FUN</code></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-3" style="background:;" data-slide-num="4" data-total-slides="7">
+  <hgroup>
+    <h2>apply</h2>
+  </hgroup>
+  <article>
+    <pre><code class="r">&gt; x &lt;- matrix(rnorm(<span class="number">200</span>), <span class="number">20</span>, <span class="number">10</span>)
+&gt; apply(x, <span class="number">2</span>, mean)
+ [<span class="number">1</span>]  <span class="number">0.04868268</span>  <span class="number">0.35743615</span> -<span class="number">0.09104379</span>
+ [<span class="number">4</span>] -<span class="number">0.05381370</span> -<span class="number">0.16552070</span> -<span class="number">0.18192493</span>
+ [<span class="number">7</span>]  <span class="number">0.10285727</span>  <span class="number">0.36519270</span>  <span class="number">0.14898850</span>
+[<span class="number">10</span>]  <span class="number">0.26767260</span>
+
+&gt; apply(x, <span class="number">1</span>, sum)
+ [<span class="number">1</span>] -<span class="number">1.94843314</span>  <span class="number">2.60601195</span>  <span class="number">1.51772391</span>
+ [<span class="number">4</span>] -<span class="number">2.80386816</span>  <span class="number">3.73728682</span> -<span class="number">1.69371360</span>
+ [<span class="number">7</span>]  <span class="number">0.02359932</span>  <span class="number">3.91874808</span> -<span class="number">2.39902859</span>
+[<span class="number">10</span>]  <span class="number">0.48685925</span> -<span class="number">1.77576824</span> -<span class="number">3.34016277</span>
+[<span class="number">13</span>]  <span class="number">4.04101009</span>  <span class="number">0.46515429</span>  <span class="number">1.83687755</span>
+[<span class="number">16</span>]  <span class="number">4.36744690</span>  <span class="number">2.21993789</span>  <span class="number">2.60983764</span>
+[<span class="number">19</span>] -<span class="number">1.48607630</span>  <span class="number">3.58709251</span>
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-4" style="background:;" data-slide-num="5" data-total-slides="7">
+  <hgroup>
+    <h2>col/row sums and means</h2>
+  </hgroup>
+  <article>
+    <p>For sums and means of matrix dimensions, we have some shortcuts.</p>
+
+<ul>
+<li><code>rowSums</code> = <code>apply(x, 1, sum)</code></li>
+<li><code>rowMeans</code> = <code>apply(x, 1, mean)</code></li>
+<li><code>colSums</code> = <code>apply(x, 2, sum)</code></li>
+<li><code>colMeans</code> = <code>apply(x, 2, mean)</code></li>
+</ul>
+
+<p>The shortcut functions are <em>much</em> faster, but you won’t notice unless you’re using a large matrix.</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-5" style="background:;" data-slide-num="6" data-total-slides="7">
+  <hgroup>
+    <h2>Other Ways to Apply</h2>
+  </hgroup>
+  <article>
+    <p>Quantiles of the rows of a matrix.</p>
+
+<pre><code class="r">&gt; x &lt;- matrix(rnorm(<span class="number">200</span>), <span class="number">20</span>, <span class="number">10</span>)
+&gt; apply(x, <span class="number">1</span>, quantile, probs = c(<span class="number">0.25</span>, <span class="number">0.75</span>))
+          [,<span class="number">1</span>]        [,<span class="number">2</span>]       [,<span class="number">3</span>]        [,<span class="number">4</span>]
+<span class="number">25</span>% -<span class="number">0.3304284</span> -<span class="number">0.99812467</span> -<span class="number">0.9186279</span> -<span class="number">0.49711686</span>
+<span class="number">75</span>%  <span class="number">0.9258157</span>  <span class="number">0.07065724</span>  <span class="number">0.3050407</span> -<span class="number">0.06585436</span>
+           [,<span class="number">5</span>]       [,<span class="number">6</span>]      [,<span class="number">7</span>]       [,<span class="number">8</span>]
+<span class="number">25</span>% -<span class="number">0.05999553</span> -<span class="number">0.6588380</span> -<span class="number">0.653250</span> <span class="number">0.01749997</span>
+<span class="number">75</span>%  <span class="number">0.52928743</span>  <span class="number">0.3727449</span>  <span class="number">1.255089</span> <span class="number">0.72318419</span>
+          [,<span class="number">9</span>]      [,<span class="number">10</span>]      [,<span class="number">11</span>]      [,<span class="number">12</span>]
+<span class="number">25</span>% -<span class="number">1.2467955</span> -<span class="number">0.8378429</span> -<span class="number">1.0488430</span> -<span class="number">0.7054902</span>
+<span class="number">75</span>%  <span class="number">0.3352377</span>  <span class="number">0.7297176</span>  <span class="number">0.3113434</span>  <span class="number">0.4581150</span>
+         [,<span class="number">13</span>]      [,<span class="number">14</span>]      [,<span class="number">15</span>]      [,<span class="number">16</span>]
+<span class="number">25</span>% -<span class="number">0.1895108</span> -<span class="number">0.5729407</span> -<span class="number">0.5968578</span> -<span class="number">0.9517069</span>
+<span class="number">75</span>%  <span class="number">0.5326299</span>  <span class="number">0.5064267</span>  <span class="number">0.4933852</span>  <span class="number">0.8868922</span>
+         [,<span class="number">17</span>]      [,<span class="number">18</span>]      [,<span class="number">19</span>]     [,<span class="number">20</span>]
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-6" style="background:;" data-slide-num="7" data-total-slides="7">
+  <hgroup>
+    <h2>apply</h2>
+  </hgroup>
+  <article>
+    <p>Average matrix in an array</p>
+
+<pre><code class="r">&gt; a &lt;- array(rnorm(<span class="number">2</span> * <span class="number">2</span> * <span class="number">10</span>), c(<span class="number">2</span>, <span class="number">2</span>, <span class="number">10</span>))
+&gt; apply(a, c(<span class="number">1</span>, <span class="number">2</span>), mean)
+           [,<span class="number">1</span>]        [,<span class="number">2</span>]
+[<span class="number">1</span>,] -<span class="number">0.2353245</span> -<span class="number">0.03980211</span>
+[<span class="number">2</span>,] -<span class="number">0.3339748</span>  <span class="number">0.04364908</span>
+
+&gt; rowMeans(a, dims = <span class="number">2</span>)
+           [,<span class="number">1</span>]        [,<span class="number">2</span>]
+[<span class="number">1</span>,] -<span class="number">0.2353245</span> -<span class="number">0.03980211</span>
+[<span class="number">2</span>,] -<span class="number">0.3339748</span>  <span class="number">0.04364908</span>
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  <div class="slide-area" id="prev-slide-area"></div><div class="slide-area" id="next-slide-area"></div></slides>
+
+  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+
+<!-- Grab CDN jQuery, fall back to local if offline -->
+<script src="./Introduction to the R Language_files/jquery-1.7.min.js"></script>
+<script>window.jQuery || document.write('<script src="../../libraries/widgets/quiz/js/jquery-1.7.min.js"><\/script>')</script>
+<!-- Load Javascripts for Widgets -->
+<!-- MathJax: Fall back to local if CDN offline but local image fonts are not supported (saves >100MB) -->
+<script type="text/x-mathjax-config;executed=true">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/javascript" src="./Introduction to the R Language_files/MathJax.js"></script>
+<!-- <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script> -->
+<script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null}});<\/script><script src="../../libraries/widgets/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><\/script>')
+</script>
+<!-- LOAD HIGHLIGHTER JS FILES -->
+<script src="./Introduction to the R Language_files/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<!-- DONE LOADING HIGHLIGHTER JS FILES -->
+</body></html>

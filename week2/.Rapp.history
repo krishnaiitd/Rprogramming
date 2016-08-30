@@ -1,0 +1,193 @@
+demo()
+q()
+pwd
+pwd()
+ls!
+ls
+pwd
+help(install.packages)
+ocal({r <- getOption("repos");
+local({r <- getOption("repos");
+;
+);
+local({r <- getOption("repos");
+r["CRAN"] <- "http://cran.r-project.org"; options(repos=r)});
+help(install.packages)
+ls
+cd Documents;
+install.packages("caret")#
+install.packages("rpart")#
+install.packages("tree")#
+install.packages("randomForest")#
+install.packages("e1071")#
+install.packages("ggplot2")
+Rscript setup.r
+ls
+dir()
+getwd()
+setwd("/Users/krishna/Documents/Rprog/week2")
+dir()
+dir()
+q1.r
+load(q1.r)
+getwd()
+dir()
+load("q1.r")
+cube <- function(x, n) {x^3}
+cube(3)
+cube <- function(x, n) {x^4}
+cube(3)
+squrae(3)
+x
+x<-1:10
+if(x > 5) {x<-0}
+y <- 5
+if (y>6) {y <- 0}
+y
+if (y>4) {y <- 0}
+y
+f<- function(x) {g<-function(y){y+z} z<-4}
+f<- function(x) {g<-function(y){y+z} z<-4 x+g(x)}
+f<- function(x) {
+g<-function(y) {}
+g<-function(y) {}
+g<-function(y) {}
+}
+f<-function(x){}
+f<-function(x){}
+f<-function(x){}
+exit
+f <- function(x) {}
+f <- function(x) { }
+f <- function(x) { }
+f <- function(x) { }
+f<- function(x) {
+g <- function(y) {
+y+z
+}
+z<- 4
+x+g(x)
+}
+z<-10
+f(3)
+x<-5
+x
+y <- if (x<3) {
+NA
+} else {
+10
+}
+y
+x
+ls
+ls()
+myfunction <- function(){#
+	x<- rnorm(100)#
+	mean(x)#
+}
+ls()
+myfunction()
+myfunction()
+myfunction()
+ls()
+dir()
+source(test.R)
+source("test.R")
+ls()
+help(sd)
+args(lm)
+args(sd)
+args(rnom)
+args(rnorm)
+r<-rnorm(100)
+r
+sd(r)
+sd(r)
+r<-rnorm(100)
+sd(r)
+help(lm)
+sys.frame(which = 0)
+f <- function(n) {
+n^3
+}
+f(5)
+f(2)
+f(n=2)
+f(x=2)
+sys.frame(which = 0)
+f<-function(a,b) {
+print(a)
+prunt(b)
+}
+f(5)
+f(5,5)
+f<-function(a,b) {
+print(a)
+print(b)
+}
+f(a)
+f(a,b)
+f(4,6)
+mean
+args(paste)
+args(cat)
+ls
+lm <- function(x){x*x}
+lm
+sys.frame()
+parnet.frame()
+parent.frame()
+parent.env()
+globalenv()
+ls()
+typeof(ls())
+ll <- ls()
+typeof(ll)
+ls()
+ls(env())
+evn()
+mygg <- function(n=9, ii){
+print(n)
+print(ii)
+}
+mygg
+mygg(ii=0)
+ls()
+parent.env(env)
+environment(fun = NULL)
+globalenv()
+baseenv()
+f<-function(x) {#
+        y<-2*x#
+        print(x)#
+        print(y)#
+        print(z)#
+     }
+f(2)
+z
+z
+cube
+cube<-function(n) {
+sq <-function() n*n
+n*sd()
+}
+cube(3)
+cube2<-function(n) {
+sq<-function() n*n
+n*sd()
+}
+cube2(2)
+mefun<-function(tt) {
+sq<-function() n*n
+n*sq()
+}
+mefun(4)
+n<-3
+mefun(4)
+mefun(6)
+mefun<-function(tt) {
+sdk <- function() tt*tt
+tt*sdk()
+}
+mefun(56)
+q()

@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<!-- saved from url=(0088)http://datasciencespecialization.github.io/courses/02_RProgramming/profiler/index.html#1 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Profiling R Code</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Profiling R Code">
+  <meta name="author" content="Roger D. Peng, Associate Professor of Biostatistics">
+  <meta name="generator" content="slidify">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="http://datasciencespecialization.github.io/courses/libraries/frameworks/io2012/css/default.css" media="all">
+  <link rel="stylesheet" href="http://datasciencespecialization.github.io/courses/libraries/frameworks/io2012/phone.css" media="only screen and (max-device-width: 480px)">
+  <link rel="stylesheet" href="http://datasciencespecialization.github.io/courses/libraries/frameworks/io2012/css/slidify.css">
+  <link rel="stylesheet" href="http://datasciencespecialization.github.io/courses/libraries/highlighters/highlight.js/css/tomorrow.css">
+  <script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="slides" src="./Profiling R Code_files/slides.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="order" src="./Profiling R Code_files/order.js"></script><script type="text/javascript" charset="utf-8" data-requirecontext="_" data-requiremodule="slide_config" src="./Profiling R Code_files/slide_config.js"></script><script type="text/javascript" charset="utf-8" data-requirecontext="_" data-requiremodule="modernizr.custom.45394" src="./Profiling R Code_files/modernizr.custom.45394.js"></script><script type="text/javascript" charset="utf-8" data-requirecontext="_" data-requiremodule="prettify/prettify" src="./Profiling R Code_files/prettify.js"></script><script type="text/javascript" charset="utf-8" data-requirecontext="_" data-requiremodule="hammer" src="./Profiling R Code_files/hammer.js"></script><script type="text/javascript" charset="utf-8" data-requirecontext="_" data-requiremodule="slide-controller" src="./Profiling R Code_files/slide-controller.js"></script><script type="text/javascript" charset="utf-8" data-requirecontext="_" data-requiremodule="slide-deck" src="./Profiling R Code_files/slide-deck.js"></script><!--<base target="_blank">--><base href="." target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script data-main="../../libraries/frameworks/io2012/js/slides" src="./Profiling R Code_files/require-1.0.8.min.js">
+  </script>
+  
+    <link rel="stylesheet" href="http://datasciencespecialization.github.io/courses/assets/css/custom.css">
+<link rel="stylesheet" href="http://datasciencespecialization.github.io/courses/assets/css/custom.css.BACKUP.546.css">
+<link rel="stylesheet" href="http://datasciencespecialization.github.io/courses/assets/css/custom.css.BASE.546.css">
+<link rel="stylesheet" href="http://datasciencespecialization.github.io/courses/assets/css/custom.css.LOCAL.546.css">
+<link rel="stylesheet" href="http://datasciencespecialization.github.io/courses/assets/css/custom.css.orig">
+<link rel="stylesheet" href="http://datasciencespecialization.github.io/courses/assets/css/custom.css.REMOTE.546.css">
+<link rel="stylesheet" href="http://datasciencespecialization.github.io/courses/assets/css/ribbons.css">
+
+<style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Hover_Arrow {position: absolute; width: 15px; height: 11px; cursor: pointer}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 5px 0px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 5px; -webkit-border-radius: 5px; -moz-border-radius: 5px; -khtml-border-radius: 5px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 1px 2em; background: transparent}
+.MathJax_MenuTitle {background-color: #CCCCCC; margin: -5px 0 0 0; text-align: center; font-style: italic; font-size: 80%; color: #444444; padding: 2px 0; overflow: hidden}
+.MathJax_MenuArrow {position: absolute; right: .5em; color: #666666}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuRadioCheck {position: absolute; left: .7em}
+.MathJax_MenuLabel {padding: 1px 2em 3px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #DDDDDD; margin: 4px 3px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: #606872; color: white}
+.MathJax_Menu_Close {position: absolute; width: 31px; height: 31px; top: -15px; left: -15px}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1em; bottom: 1.5em; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><link rel="icon" type="image/png" href="http://datasciencespecialization.github.io/courses/02_RProgramming/profiler/images/google_developers_logo_tiny.png"><link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open%20Sans:regular,semibold,italic,italicsemibold|Inconsolata&v2"></head>
+<body style="opacity: 0" class="loaded popup"><div id="MathJax_Message" style="display: none;"></div>
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+    <!-- END LOGO SLIDE -->
+    
+
+    <!-- TITLE SLIDE -->
+    <!-- Should I move this to a Local Layout File? -->
+    <slide class="title-slide segue nobackground current" data-slide-num="1" data-total-slides="17">
+      <aside class="gdbar">
+        <img src="./Profiling R Code_files/bloomberg_shield.png">
+      </aside>
+      <hgroup class="auto-fadein">
+        <h1>Profiling R Code</h1>
+        <h2></h2>
+        <p>Roger D. Peng, Associate Professor of Biostatistics<br>Johns Hopkins Bloomberg School of Public Health</p>
+      </hgroup>
+          </slide>
+
+    <!-- SLIDES -->
+      <slide class="next" id="slide-1" style="background:;" data-slide-num="2" data-total-slides="17">
+  <hgroup>
+    <h2>Why is My Code So Slow?</h2>
+  </hgroup>
+  <article>
+    <ul>
+<li><p>Profiling is a systematic way to examine how much time is spend in
+different parts of a program</p></li>
+<li><p>Useful when trying to optimize your code</p></li>
+<li><p>Often code runs fine once, but what if you have to put it in a loop
+for 1,000 iterations? Is it still fast enough?</p></li>
+<li><p>Profiling is better than guessing</p></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="far-next" id="slide-2" style="background:;" data-slide-num="3" data-total-slides="17">
+  <hgroup>
+    <h2>On Optimizing Your Code</h2>
+  </hgroup>
+  <article>
+    <ul>
+<li><p>Getting biggest impact on speeding up code depends on knowing where
+the code spends most of its time</p></li>
+<li><p>This cannot be done without performance analysis or profiling</p></li>
+</ul>
+
+<blockquote>
+We should forget about small efficiencies, say about 97% of the
+  time: premature optimization is the root of all evil
+</blockquote>
+
+<p>--Donald Knuth</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-3" style="background:;" data-slide-num="4" data-total-slides="17">
+  <hgroup>
+    <h2>General Principles of Optimization</h2>
+  </hgroup>
+  <article>
+    <ul>
+<li><p>Design first, then optimize</p></li>
+<li><p>Remember: Premature optimization is the root of all evil</p></li>
+<li><p>Measure (collect data), don’t guess. </p></li>
+<li><p>If you're going to be scientist, you need to apply the same
+principles here!</p></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-4" style="background:;" data-slide-num="5" data-total-slides="17">
+  <hgroup>
+    <h2>Using <code>system.time()</code></h2>
+  </hgroup>
+  <article>
+    <ul>
+<li><p>Takes an arbitrary R expression as input (can be wrapped in curly
+braces) and returns the amount of time taken to evaluate the
+expression</p></li>
+<li><p>Computes the time (in seconds) needed to execute an expression</p>
+
+<ul>
+<li>If there’s an error, gives time until the error occurred</li>
+</ul></li>
+<li><p>Returns an object of class <code>proc_time</code></p>
+
+<ul>
+<li><strong>user time</strong>: time charged to the CPU(s) for this expression</li>
+<li><strong>elapsed time</strong>: "wall clock" time</li>
+</ul></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-5" style="background:;" data-slide-num="6" data-total-slides="17">
+  <hgroup>
+    <h2>Using <code>system.time()</code></h2>
+  </hgroup>
+  <article>
+    <ul>
+<li><p>Usually, the user time and elapsed time are relatively close, for straight computing tasks</p></li>
+<li><p>Elapsed time may be <em>greater than</em> user time if the CPU spends a lot of time waiting around</p></li>
+<li><p>Elapsted time may be <em>smaller than</em> the user time if your machine
+has multiple cores/processors (and is capable of using them)</p>
+
+<ul>
+<li>Multi-threaded BLAS libraries (vecLib/Accelerate, ATLAS, ACML, MKL)</li>
+<li>Parallel processing via the <strong>parallel</strong> package</li>
+</ul></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-6" style="background:;" data-slide-num="7" data-total-slides="17">
+  <hgroup>
+    <h2>Using <code>system.time()</code></h2>
+  </hgroup>
+  <article>
+    <pre><code class="r"><span class="comment">## Elapsed time &gt; user time</span>
+system.time(readLines(<span class="string">"http://www.jhsph.edu"</span>))
+   user  system elapsed 
+  <span class="number">0.004</span>   <span class="number">0.002</span>   <span class="number">0.431</span> 
+
+<span class="comment">## Elapsed time &lt; user time</span>
+hilbert &lt;- <span class="keyword">function</span>(n) { 
+        i &lt;- <span class="number">1</span>:n
+        <span class="number">1</span> / outer(i - <span class="number">1</span>, i, <span class="string">"+”)
+}
+x &lt;- hilbert(1000)
+system.time(svd(x))
+   user  system elapsed 
+  1.605   0.094   0.742  
+</span></code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-7" style="background:;" data-slide-num="8" data-total-slides="17">
+  <hgroup>
+    <h2>Timing Longer Expressions</h2>
+  </hgroup>
+  <article>
+    <pre><code class="r">system.time({
+    n &lt;- <span class="number">1000</span>
+    r &lt;- numeric(n)
+    <span class="keyword">for</span> (i <span class="keyword">in</span> <span class="number">1</span>:n) {
+        x &lt;- rnorm(n)
+        r[i] &lt;- mean(x)
+    }
+})
+</code></pre>
+
+<pre><code class="vala"><span class="preprocessor">##    user  system elapsed </span>
+<span class="preprocessor">##   0.097   0.002   0.099</span>
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-8" style="background:;" data-slide-num="9" data-total-slides="17">
+  <hgroup>
+    <h2>Beyond <code>system.time()</code></h2>
+  </hgroup>
+  <article>
+    <ul>
+<li><p>Using <code>system.time()</code> allows you to test certain functions or code
+blocks to see if they are taking excessive amounts of time</p></li>
+<li><p>Assumes you already know where the problem is and can call
+<code>system.time()</code> on it</p></li>
+<li><p>What if you don’t know where to start? </p></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-9" style="background:;" data-slide-num="10" data-total-slides="17">
+  <hgroup>
+    <h2>The R Profiler</h2>
+  </hgroup>
+  <article>
+    <ul>
+<li><p>The <code>Rprof()</code> function starts the profiler in R</p>
+
+<ul>
+<li>R must be compiled with profiler support (but this is usually the case)</li>
+</ul></li>
+<li><p>The <code>summaryRprof()</code> function summarizes the output from <code>Rprof()</code>
+(otherwise it’s not readable)</p></li>
+<li><p>DO NOT use <code>system.time()</code> and <code>Rprof()</code> together or you will be sad</p></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-10" style="background:;" data-slide-num="11" data-total-slides="17">
+  <hgroup>
+    <h2>The R Profiler</h2>
+  </hgroup>
+  <article>
+    <ul>
+<li><p>Rprof() keeps track of the function call stack at regularly sampled
+intervals and tabulates how much time is spend in each function</p></li>
+<li><p>Default sampling interval is 0.02 seconds</p></li>
+<li><p>NOTE: If your code runs very quickly, the profiler is not useful,
+but then you probably don't need it in that case</p></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-11" style="background:;" data-slide-num="12" data-total-slides="17">
+  <hgroup>
+    <h2>R Profiler Raw Output</h2>
+  </hgroup>
+  <article>
+    <pre><code class="r"><span class="comment">## lm(y ~ x)</span>
+
+sample.interval=<span class="number">10000</span>
+<span class="string">"list"</span> <span class="string">"eval"</span> <span class="string">"eval"</span> <span class="string">"model.frame.default"</span> <span class="string">"model.frame"</span> <span class="string">"eval"</span> <span class="string">"eval"</span> <span class="string">"lm"</span> 
+<span class="string">"list"</span> <span class="string">"eval"</span> <span class="string">"eval"</span> <span class="string">"model.frame.default"</span> <span class="string">"model.frame"</span> <span class="string">"eval"</span> <span class="string">"eval"</span> <span class="string">"lm"</span> 
+<span class="string">"list"</span> <span class="string">"eval"</span> <span class="string">"eval"</span> <span class="string">"model.frame.default"</span> <span class="string">"model.frame"</span> <span class="string">"eval"</span> <span class="string">"eval"</span> <span class="string">"lm"</span> 
+<span class="string">"list"</span> <span class="string">"eval"</span> <span class="string">"eval"</span> <span class="string">"model.frame.default"</span> <span class="string">"model.frame"</span> <span class="string">"eval"</span> <span class="string">"eval"</span> <span class="string">"lm"</span> 
+<span class="string">"na.omit"</span> <span class="string">"model.frame.default"</span> <span class="string">"model.frame"</span> <span class="string">"eval"</span> <span class="string">"eval"</span> <span class="string">"lm"</span> 
+<span class="string">"na.omit"</span> <span class="string">"model.frame.default"</span> <span class="string">"model.frame"</span> <span class="string">"eval"</span> <span class="string">"eval"</span> <span class="string">"lm"</span> 
+<span class="string">"na.omit"</span> <span class="string">"model.frame.default"</span> <span class="string">"model.frame"</span> <span class="string">"eval"</span> <span class="string">"eval"</span> <span class="string">"lm"</span> 
+<span class="string">"na.omit"</span> <span class="string">"model.frame.default"</span> <span class="string">"model.frame"</span> <span class="string">"eval"</span> <span class="string">"eval"</span> <span class="string">"lm"</span> 
+<span class="string">"na.omit"</span> <span class="string">"model.frame.default"</span> <span class="string">"model.frame"</span> <span class="string">"eval"</span> <span class="string">"eval"</span> <span class="string">"lm"</span> 
+<span class="string">"na.omit"</span> <span class="string">"model.frame.default"</span> <span class="string">"model.frame"</span> <span class="string">"eval"</span> <span class="string">"eval"</span> <span class="string">"lm"</span> 
+<span class="string">"na.omit"</span> <span class="string">"model.frame.default"</span> <span class="string">"model.frame"</span> <span class="string">"eval"</span> <span class="string">"eval"</span> <span class="string">"lm"</span> 
+<span class="string">"lm.fit"</span> <span class="string">"lm"</span> 
+<span class="string">"lm.fit"</span> <span class="string">"lm"</span> 
+<span class="string">"lm.fit"</span> <span class="string">"lm"</span> 
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-12" style="background:;" data-slide-num="13" data-total-slides="17">
+  <hgroup>
+    <h2>Using <code>summaryRprof()</code></h2>
+  </hgroup>
+  <article>
+    <ul>
+<li><p>The <code>summaryRprof()</code> function tabulates the R profiler output and
+calculates how much time is spend in which function</p></li>
+<li><p>There are two methods for normalizing the data</p></li>
+<li><p>"by.total" divides the time spend in each function by the total run time</p></li>
+<li><p>"by.self" does the same but first subtracts out time spent in
+functions above in the call stack</p></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-13" style="background:;" data-slide-num="14" data-total-slides="17">
+  <hgroup>
+    <h2>By Total</h2>
+  </hgroup>
+  <article>
+    <pre><code class="r">$by.total
+                        total.time total.pct self.time self.pct
+<span class="string">"lm"</span>                          <span class="number">7.41</span>    <span class="number">100.00</span>      <span class="number">0.30</span>     <span class="number">4.05</span>
+<span class="string">"lm.fit"</span>                      <span class="number">3.50</span>     <span class="number">47.23</span>      <span class="number">2.99</span>    <span class="number">40.35</span>
+<span class="string">"model.frame.default"</span>         <span class="number">2.24</span>     <span class="number">30.23</span>      <span class="number">0.12</span>     <span class="number">1.62</span>
+<span class="string">"eval"</span>                        <span class="number">2.24</span>     <span class="number">30.23</span>      <span class="number">0.00</span>     <span class="number">0.00</span>
+<span class="string">"model.frame"</span>                 <span class="number">2.24</span>     <span class="number">30.23</span>      <span class="number">0.00</span>     <span class="number">0.00</span>
+<span class="string">"na.omit"</span>                     <span class="number">1.54</span>     <span class="number">20.78</span>      <span class="number">0.24</span>     <span class="number">3.24</span>
+<span class="string">"na.omit.data.frame"</span>          <span class="number">1.30</span>     <span class="number">17.54</span>      <span class="number">0.49</span>     <span class="number">6.61</span>
+<span class="string">"lapply"</span>                      <span class="number">1.04</span>     <span class="number">14.04</span>      <span class="number">0.00</span>     <span class="number">0.00</span>
+<span class="string">"[.data.frame"</span>                <span class="number">1.03</span>     <span class="number">13.90</span>      <span class="number">0.79</span>    <span class="number">10.66</span>
+<span class="string">"["</span>                           <span class="number">1.03</span>     <span class="number">13.90</span>      <span class="number">0.00</span>     <span class="number">0.00</span>
+<span class="string">"as.list.data.frame"</span>          <span class="number">0.82</span>     <span class="number">11.07</span>      <span class="number">0.82</span>    <span class="number">11.07</span>
+<span class="string">"as.list"</span>                     <span class="number">0.82</span>     <span class="number">11.07</span>      <span class="number">0.00</span>     <span class="number">0.00</span>
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-14" style="background:;" data-slide-num="15" data-total-slides="17">
+  <hgroup>
+    <h2>By Self</h2>
+  </hgroup>
+  <article>
+    <pre><code class="r">$by.self
+                        self.time self.pct total.time total.pct
+<span class="string">"lm.fit"</span>                     <span class="number">2.99</span>    <span class="number">40.35</span>       <span class="number">3.50</span>     <span class="number">47.23</span>
+<span class="string">"as.list.data.frame"</span>         <span class="number">0.82</span>    <span class="number">11.07</span>       <span class="number">0.82</span>     <span class="number">11.07</span>
+<span class="string">"[.data.frame"</span>               <span class="number">0.79</span>    <span class="number">10.66</span>       <span class="number">1.03</span>     <span class="number">13.90</span>
+<span class="string">"structure"</span>                  <span class="number">0.73</span>     <span class="number">9.85</span>       <span class="number">0.73</span>      <span class="number">9.85</span>
+<span class="string">"na.omit.data.frame"</span>         <span class="number">0.49</span>     <span class="number">6.61</span>       <span class="number">1.30</span>     <span class="number">17.54</span>
+<span class="string">"list"</span>                       <span class="number">0.46</span>     <span class="number">6.21</span>       <span class="number">0.46</span>      <span class="number">6.21</span>
+<span class="string">"lm"</span>                         <span class="number">0.30</span>     <span class="number">4.05</span>       <span class="number">7.41</span>    <span class="number">100.00</span>
+<span class="string">"model.matrix.default"</span>       <span class="number">0.27</span>     <span class="number">3.64</span>       <span class="number">0.79</span>     <span class="number">10.66</span>
+<span class="string">"na.omit"</span>                    <span class="number">0.24</span>     <span class="number">3.24</span>       <span class="number">1.54</span>     <span class="number">20.78</span>
+<span class="string">"as.character"</span>               <span class="number">0.18</span>     <span class="number">2.43</span>       <span class="number">0.18</span>      <span class="number">2.43</span>
+<span class="string">"model.frame.default"</span>        <span class="number">0.12</span>     <span class="number">1.62</span>       <span class="number">2.24</span>     <span class="number">30.23</span>
+<span class="string">"anyDuplicated.default"</span>      <span class="number">0.02</span>     <span class="number">0.27</span>       <span class="number">0.02</span>      <span class="number">0.27</span>
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-15" style="background:;" data-slide-num="16" data-total-slides="17">
+  <hgroup>
+    <h2><code>summaryRprof()</code> Output</h2>
+  </hgroup>
+  <article>
+    <pre><code class="r">$sample.interval
+[<span class="number">1</span>] <span class="number">0.02</span>
+
+$sampling.time
+[<span class="number">1</span>] <span class="number">7.41</span>
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-16" style="background:;" data-slide-num="17" data-total-slides="17">
+  <hgroup>
+    <h2>Summary</h2>
+  </hgroup>
+  <article>
+    <ul>
+<li><p><code>Rprof()</code> runs the profiler for performance of analysis of R code</p></li>
+<li><p><code>summaryRprof()</code> summarizes the output of <code>Rprof()</code> and gives
+percent of time spent in each function (with two types of
+normalization)</p></li>
+<li><p>Good to break your code into functions so that the profiler can give
+useful information about where time is being spent</p></li>
+<li><p>C or Fortran code is not profiled</p></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  <div class="slide-area" id="prev-slide-area"></div><div class="slide-area" id="next-slide-area"></div></slides>
+
+  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+
+<!-- Grab CDN jQuery, fall back to local if offline -->
+<script src="./Profiling R Code_files/jquery-1.7.min.js"></script>
+<script>window.jQuery || document.write('<script src="../../libraries/widgets/quiz/js/jquery-1.7.min.js"><\/script>')</script>
+<!-- Load Javascripts for Widgets -->
+<!-- MathJax: Fall back to local if CDN offline but local image fonts are not supported (saves >100MB) -->
+<script type="text/x-mathjax-config;executed=true">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/javascript" src="./Profiling R Code_files/MathJax.js"></script>
+<!-- <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script> -->
+<script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null}});<\/script><script src="../../libraries/widgets/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><\/script>')
+</script>
+<!-- LOAD HIGHLIGHTER JS FILES -->
+<script src="./Profiling R Code_files/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<!-- DONE LOADING HIGHLIGHTER JS FILES -->
+</body></html>
